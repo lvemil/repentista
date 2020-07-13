@@ -2,13 +2,14 @@ import unittest
 import logging
 
 from repentista.silabeador import separar_silabas
-from repentista.versometro import medir_verso
+from repentista.metrica import medir_verso
+from repentista.acentuacion import silaba_tonica
 
 def setUpModule():
     logging.basicConfig(level=logging.DEBUG)
 
 
-class TestRepentista(unittest.TestCase):
+class TestSilabrador(unittest.TestCase):
     
     # c + v : 
     # Las consonantes solas no forman sílabas
@@ -105,11 +106,12 @@ class TestRepentista(unittest.TestCase):
         self.assertEqual(len(r1), 3)
         self.assertEqual(len(r2), 4)
 
-    def test_versometro_medir_verso(self):
-        r1 = medir_verso("Amor, no te llame amor")        
-        self.assertEqual(r1[0], 8)
+class TestMetrica(unittest.TestCase):
+    def test_medir_verso(self):
+        r = medir_verso("Amor, no te llame amor")        
+        self.assertEqual(len(r), 7)
 
-    def test_versometro_medir_poema(self):
+    def test_medir_poema(self):
         poema =    ["Amor, no te llame amor", 
                     "el que no te corresponde", 
                     "pues que no hay materia adonde", 
@@ -123,3 +125,18 @@ class TestRepentista(unittest.TestCase):
     
         for verso in poema:
             medir_verso(verso)
+
+class TestAcentuador(unittest.TestCase):
+    def test_silaba_tonica(self):
+        r = silaba_tonica("revolución")
+        self.assertEqual(r[1], 4)
+        r = silaba_tonica("revés")
+        self.assertEqual(r[1], 2)
+        r = silaba_tonica("panel")
+        self.assertEqual(r[1], 2)
+        r = silaba_tonica("lápiz")
+        self.assertEqual(r[1], 1)
+        r = silaba_tonica("esdrújula")
+        self.assertEqual(r[1], 2)
+        r = silaba_tonica("cantándoselas")
+        self.assertEqual(r[1], 2)
