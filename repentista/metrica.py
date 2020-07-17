@@ -3,6 +3,7 @@ import string
 import re
 
 from repentista import silabeador
+from repentista import acentuacion
 
 # sinalefa, sineresis, 
 def es_licencia(silaba1, silaba2):
@@ -16,24 +17,41 @@ def es_licencia(silaba1, silaba2):
     return False
 
 def medir_verso(verso):
-    verso = verso.translate(str.maketrans('', '', string.punctuation))
+    res = {}
+    # medir verso
+    verso = verso.translate(str.maketrans('', '', '¡!"#$%&\'()*+,-./:;<=>¿?@[\\]^_`{|}~'))
     palabras = verso.split(" ")
-    silabas_todas = []
+    silabas_gramaticales = []
     for palabra in palabras:
         silabas = silabeador.separar_silabas(palabra)
-        silabas_todas += silabas
+        silabas_gramaticales += silabas
+    res["silabas_gramaticales"] = silabas_gramaticales
     
     # identificar licencias (sinalefa, sineresis)
-    metrica = [silabas_todas[0]]
-    for i in range(1, len(silabas_todas)):
-        silaba1 = metrica[-1]
-        silaba2 = silabas_todas[i]
+    res["licencias"] = []
+    silabas_metricas = [silabas_gramaticales[0]]
+    for i in range(1, len(silabas_gramaticales)):
+        silaba1 = silabas_metricas[-1]
+        silaba2 = silabas_gramaticales[i]
         if es_licencia(silaba1, silaba2):
-            metrica[-1] = f"{silaba1} {silaba2}"
+            ns = f"{silaba1} {silaba2}"
+            res["licencias"].append(ns)
+            silabas_metricas[-1] = ns
         else:
-            metrica.append(silaba2)
+            silabas_metricas.append(silaba2)
+    res["silabas_metricas"] = silabas_metricas
+    medida = len(silabas_metricas)
 
     # sumar o restar segun la clasificacion de la ultima palabra
+    tipo = acentuacion.tipo_palabra(palabras[-1])
+    acento_ultima_palabra = 0
+    if tipo == acentuacion.TipoAcentuacion.AGUDA or tipo == acentuacion.TipoAcentuacion.MONOSILABA:
+        acento_ultima_palabra = 1
+    elif tipo == acentuacion.TipoAcentuacion.ESDRUJULA:
+        acento_ultima_palabra = -1
+    medida += acento_ultima_palabra
+    res["medida"] = medida
+    res["acento_ultima_palabra"] = acento_ultima_palabra
 
-    logging.debug(f"\n {'/ '.join(metrica)}")
-    return metrica
+    logging.debug(f"{'/ '.join(silabas_metricas)} {medida} {acento_ultima_palabra}")
+    return res

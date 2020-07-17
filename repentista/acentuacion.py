@@ -1,8 +1,16 @@
 import unittest
 import logging
 import re
+from enum import Enum
 
 from repentista.silabeador import separar_silabas
+
+class TipoAcentuacion(Enum):
+    AGUDA = 1
+    LLANA = 2
+    ESDRUJULA = 3
+    SOBRE_ESDRUJULA = 4
+    MONOSILABA = 5
 
 def silaba_tonica(palabra):
     # separar la palabra en silabas
@@ -20,5 +28,19 @@ def silaba_tonica(palabra):
     else:
          return silabas, len(silabas) # palabra aguda
 
-        
+def tipo_palabra(palabra):
+    r = silaba_tonica(palabra)
+    if len(r[0]) == 1:
+        return TipoAcentuacion.MONOSILABA
+    else:
+        s = len(r[0]) - r[1]
+        if s == 0:
+            return TipoAcentuacion.AGUDA
+        elif s == 1:
+            return TipoAcentuacion.LLANA
+        elif s == 2:
+            return TipoAcentuacion.ESDRUJULA
+        else:
+            return TipoAcentuacion.SOBRE_ESDRUJULA
+
 

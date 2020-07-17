@@ -3,7 +3,8 @@ import logging
 
 from repentista.silabeador import separar_silabas
 from repentista.metrica import medir_verso
-from repentista.acentuacion import silaba_tonica
+from repentista.acentuacion import silaba_tonica, tipo_palabra
+from repentista.acentuacion import TipoAcentuacion
 
 def setUpModule():
     logging.basicConfig(level=logging.DEBUG)
@@ -156,6 +157,23 @@ class TestMetrica(unittest.TestCase):
         for verso in poema:
             medir_verso(verso)
 
+    def test_medir_poema_2(self):
+        poema =    ["Se va con algo mío la tarde que se aleja...", 
+                    "mi dolor de vivir es un dolor de amar,", 
+                    "y al son de la garúa, en la antigua calleja,", 
+                    "me invade un infinito deseo de llorar.", 
+                    "Que son cosas de niño me dices... ¡Quién me diera,",
+                    "tener una perenne inconciencia infantil,",
+                    "ser del reino del día y de la primavera,",
+                    "del ruiseñor que canta y del alba de abril!",
+                    "¡Ah, ser pueril, ser puro, ser canoro, ser suave",
+                    "trino, perfume o canto, crepúsculo o aurora;",
+                    "como la flor que aroma la vida… y no lo sabe,",
+                    "como el astro que alumbra las noches… y lo ignora! "]
+    
+        for verso in poema:
+            medir_verso(verso)
+
     def test_licencias(self):
         r = medir_verso("Juana estaba acostada")        
         self.assertEqual(len(r), 7)
@@ -186,3 +204,24 @@ class TestAcentuador(unittest.TestCase):
         self.assertEqual(r[1], 2)
         r = silaba_tonica("cantándoselas")
         self.assertEqual(r[1], 2)
+
+    def test_tipo_palabra(self):
+        r = tipo_palabra("revolución")
+        self.assertEqual(r, TipoAcentuacion.AGUDA)
+        r = tipo_palabra("revés")
+        self.assertEqual(r, TipoAcentuacion.AGUDA)
+        r = tipo_palabra("panel")
+        self.assertEqual(r, TipoAcentuacion.AGUDA)
+        r = tipo_palabra("lápiz")
+        self.assertEqual(r, TipoAcentuacion.LLANA)
+        r = tipo_palabra("pena")
+        self.assertEqual(r, TipoAcentuacion.LLANA)
+        r = tipo_palabra("esdrújula")
+        self.assertEqual(r, TipoAcentuacion.ESDRUJULA)
+        r = tipo_palabra("cántame")
+        self.assertEqual(r, TipoAcentuacion.ESDRUJULA)
+        r = tipo_palabra("cantándoselas")
+        self.assertEqual(r, TipoAcentuacion.SOBRE_ESDRUJULA)
+        r = tipo_palabra("la")
+        self.assertEqual(r, TipoAcentuacion.MONOSILABA)
+        
