@@ -1,18 +1,17 @@
 import logging
+import re
 
 def es_grupo_consonantico(consonante1, consonante2):
     consonante_licuante = "bcdfgpt"
     consonante_liquida = "lr"
     return consonante1 in consonante_licuante and consonante2 in consonante_liquida
 
-def es_hiato(vocal1, vocal2): #"io"
-    vocal_abierta = "aeoáéó"
-    vocal_cerrada = "iuíú"
-    vocal_acentuada = "áéíóú"
-    return ((vocal1 in vocal_abierta and vocal2 in vocal_cerrada) or  # vocal abierta (a,e,o) + vocal cerrada(i,u)
-            (vocal1 in vocal_abierta and vocal2 in vocal_abierta) or  # vocal abierta + vocal abierta
-            (vocal1 not in vocal_acentuada and vocal2 == vocal1) or # vocal no acentuada + misma vocal no acentuada
-            (vocal1 in vocal_cerrada and vocal2 in vocal_cerrada and (vocal1 in vocal_acentuada or vocal2 in vocal_acentuada))) # vocal cerrada + vocal cerrada (alguna de ellas, acentuada)
+def es_hiato(vocal1, vocal2):
+    str = vocal1 + vocal2
+    return ((re.findall("^[íú]", str) and re.findall("[aeo]$", str)) or
+        (re.findall("^[aeo]", str) and re.findall("[íú]$", str)) or
+        (re.findall("^[aeoáéó]", str) and re.findall("[aeoáéó]$", str) and vocal1 != vocal2) or
+        (vocal1 == vocal2))
 
 def es_vocal(letra):
     vocales = "aeiouáéíóú"
@@ -25,15 +24,24 @@ def es_letra_doble(letra, siguiente_letra):
     return letra + siguiente_letra in ["ch", "rr", "ll", "qu"]
 
 def separar_silabas(palabra):
+    palabra = palabra.lower()
     silabas = []
     silaba = ""
     indice = 0
     while indice < len(palabra):
         letra = palabra[indice]
         if indice == len(palabra) - 1: # ultima letra
-            silaba += letra
-            silabas.append(silaba)
-            silaba = ""
+            if silaba != "":
+                silaba += letra
+                silabas.append(silaba)
+                silaba = ""
+            else:
+                if es_vocal(letra) or len(silabas) == 0:
+                    silaba += letra
+                    silabas.append(silaba)
+                    silaba = ""
+                else:
+                    silabas[-1] += letra
         else:
             siguiente_letra = palabra[indice+1]
             if es_vocal(letra): # vocal

@@ -106,6 +106,36 @@ class TestSilabrador(unittest.TestCase):
         self.assertEqual(len(r1), 3)
         self.assertEqual(len(r2), 4)
 
+    def test_12_hiatos(self):
+        r = separar_silabas("Dúo")
+        self.assertEqual(len(r), 2)
+        r = separar_silabas("Encía")
+        self.assertEqual(len(r), 3)
+        r = separar_silabas("Insinúe")
+        self.assertEqual(len(r), 4)
+        r = separar_silabas("Sonríe")
+        self.assertEqual(len(r), 3)
+        r = separar_silabas("Bahía")
+        self.assertEqual(len(r), 3)
+        r = separar_silabas("Vehículo")
+        self.assertEqual(len(r), 4)
+        r = separar_silabas("Deseo")
+        self.assertEqual(len(r), 3)
+        r = separar_silabas("Aéreo")
+        self.assertEqual(len(r), 4)
+        r = separar_silabas("Canoa")
+        self.assertEqual(len(r), 3)
+        r = separar_silabas("Alcohol")
+        self.assertEqual(len(r), 3)
+        r = separar_silabas("Creer")
+        self.assertEqual(len(r), 2)
+        r = separar_silabas("Leer")
+        self.assertEqual(len(r), 2)
+        r = separar_silabas("Cooperar")
+        self.assertEqual(len(r), 4)
+        r = separar_silabas("Azahar")
+        self.assertEqual(len(r), 3)
+
 class TestMetrica(unittest.TestCase):
     def test_medir_verso(self):
         r = medir_verso("Amor, no te llame amor")        
@@ -125,6 +155,22 @@ class TestMetrica(unittest.TestCase):
     
         for verso in poema:
             medir_verso(verso)
+
+    def test_licencias(self):
+        r = medir_verso("Juana estaba acostada")        
+        self.assertEqual(len(r), 7)
+        r = medir_verso("Cantando allá va María")        
+        self.assertEqual(len(r), 7)
+        r = medir_verso("José, solo con el abrigo y los guantes es suficiente")        
+        self.assertEqual(len(r), 17)
+        r = medir_verso("María y el amigo")        
+        self.assertEqual(len(r), 5)
+        r = medir_verso("La paz y la humanidad deben ir de la mano")        
+        self.assertEqual(len(r), 14)
+        r = medir_verso("El camión llevaba láminas de zinc y hierro")       
+        self.assertEqual(len(r), 14)
+        r = medir_verso("María andaba jugando a las diez")        
+        self.assertEqual(len(r), 9)
 
 class TestAcentuador(unittest.TestCase):
     def test_silaba_tonica(self):
