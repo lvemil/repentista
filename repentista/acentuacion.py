@@ -1,4 +1,3 @@
-import unittest
 import logging
 import re
 from enum import Enum
@@ -43,4 +42,11 @@ def tipo_palabra(palabra):
         else:
             return TipoAcentuacion.SOBRE_ESDRUJULA
 
-
+def ultima_vocal_tonica(palabra):
+    silabas, no = silaba_tonica(palabra)
+    silaba = silabas[no-1]
+    
+    for i in range(len(silaba)-1, -1, -1):
+        if silaba[i] in "[aeiouáéíóú]":
+            indice = len(palabra) - (len(silaba) - i + sum([len(s) for s in silabas[no:]])) + 1
+            return indice

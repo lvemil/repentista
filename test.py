@@ -3,8 +3,8 @@ import logging
 
 from repentista.silabeador import separar_silabas
 from repentista.metrica import medir_verso
-from repentista.acentuacion import silaba_tonica, tipo_palabra
-from repentista.acentuacion import TipoAcentuacion
+from repentista.acentuacion import silaba_tonica, tipo_palabra, ultima_vocal_tonica, TipoAcentuacion
+from repentista.rima import rima, TipoRima
 
 def setUpModule():
     logging.basicConfig(level=logging.DEBUG)
@@ -140,7 +140,7 @@ class TestSilabrador(unittest.TestCase):
 class TestMetrica(unittest.TestCase):
     def test_medir_verso(self):
         r = medir_verso("Amor, no te llame amor")        
-        self.assertEqual(len(r), 7)
+        self.assertEqual(r['medida'], 8)
 
     def test_medir_poema(self):
         poema =    ["Amor, no te llame amor", 
@@ -176,19 +176,19 @@ class TestMetrica(unittest.TestCase):
 
     def test_licencias(self):
         r = medir_verso("Juana estaba acostada")        
-        self.assertEqual(len(r), 7)
+        self.assertEqual(r['medida'], 7)
         r = medir_verso("Cantando allá va María")        
-        self.assertEqual(len(r), 7)
+        self.assertEqual(r['medida'], 7)
         r = medir_verso("José, solo con el abrigo y los guantes es suficiente")        
-        self.assertEqual(len(r), 17)
+        self.assertEqual(r['medida'], 17)
         r = medir_verso("María y el amigo")        
-        self.assertEqual(len(r), 5)
+        self.assertEqual(r['medida'], 5)
         r = medir_verso("La paz y la humanidad deben ir de la mano")        
-        self.assertEqual(len(r), 14)
+        self.assertEqual(r['medida'], 14)
         r = medir_verso("El camión llevaba láminas de zinc y hierro")       
-        self.assertEqual(len(r), 14)
+        self.assertEqual(r['medida'], 14)
         r = medir_verso("María andaba jugando a las diez")        
-        self.assertEqual(len(r), 9)
+        self.assertEqual(r['medida'], 10)
 
 class TestAcentuador(unittest.TestCase):
     def test_silaba_tonica(self):
@@ -224,4 +224,29 @@ class TestAcentuador(unittest.TestCase):
         self.assertEqual(r, TipoAcentuacion.SOBRE_ESDRUJULA)
         r = tipo_palabra("la")
         self.assertEqual(r, TipoAcentuacion.MONOSILABA)
-        
+
+    def test_ultima_vocal_tonica(self):
+        r = ultima_vocal_tonica("revolución")
+        self.assertEqual(r, 9)
+        r = ultima_vocal_tonica("revés")
+        self.assertEqual(r, 4)
+        r = ultima_vocal_tonica("panel")
+        self.assertEqual(r, 4)
+        r = ultima_vocal_tonica("lápiz")
+        self.assertEqual(r, 2)
+        r = ultima_vocal_tonica("pena")
+        self.assertEqual(r, 2)
+        r = ultima_vocal_tonica("esdrújula")
+        self.assertEqual(r, 5)
+        r = ultima_vocal_tonica("cántame")
+        self.assertEqual(r, 2)
+        r = ultima_vocal_tonica("cantándoselas")
+        self.assertEqual(r, 5)
+        r = ultima_vocal_tonica("la")
+        self.assertEqual(r, 2)
+
+class TestRima(unittest.TestCase):
+    def test_rima(self):
+        self.assertEqual(rima("Mi niña llegó riendo","a quien yo sigo queriendo."), TipoRima.CONSONATE)
+        self.assertEqual(rima("por el hogar que creamos","se respira que la amamos"), TipoRima.CONSONATE)
+        self.assertEqual(rima("en una caja a mi vida","como su mamá querida"), TipoRima.CONSONATE)
