@@ -4,7 +4,7 @@ import logging
 from repentista.silabeador import separar_silabas
 from repentista.metrica import medir_verso
 from repentista.acentuacion import silaba_tonica, tipo_palabra, ultima_vocal_tonica, TipoAcentuacion
-from repentista.rima import rima, TipoRima
+from repentista.rima import rima_verso, rima_poema, TipoRima
 
 def setUpModule():
     logging.basicConfig(level=logging.DEBUG)
@@ -247,6 +247,19 @@ class TestAcentuador(unittest.TestCase):
 
 class TestRima(unittest.TestCase):
     def test_rima(self):
-        self.assertEqual(rima("Mi niña llegó riendo","a quien yo sigo queriendo."), TipoRima.CONSONATE)
-        self.assertEqual(rima("por el hogar que creamos","se respira que la amamos"), TipoRima.CONSONATE)
-        self.assertEqual(rima("en una caja a mi vida","como su mamá querida"), TipoRima.CONSONATE)
+        self.assertEqual(rima_verso("Mi niña llegó riendo","a quien yo sigo queriendo."), TipoRima.CONSONATE)
+        self.assertEqual(rima_verso("por el hogar que creamos","se respira que la amamos"), TipoRima.CONSONATE)
+        self.assertEqual(rima_verso("en una caja a mi vida","como su mamá querida"), TipoRima.CONSONATE)
+
+    def test_rima_poema(self):
+        poema =    ["Yo capturo aquel momento", 
+                    "en que el mundo nos ignora", 
+                    "y en nuestro universo aflora", 
+                    "un beso con sentimiento.", 
+                    "Del beso tengo tu aliento",
+                    "y de tu boca el sabor",
+                    "y mientras corre el rumor",
+                    "de las olas vespertinas",
+                    "capturo de tus retinas",
+                    "ese momento de amor."]
+        rima = rima_poema(poema)
