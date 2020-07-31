@@ -104,12 +104,15 @@ def separar_silabas(palabra):
                         silaba = ""
                     silaba += letra
                     silaba += palabra[indice+1]
-                    silaba += palabra[indice+2]
+                    #silaba += palabra[indice+2]
                     #silabas.append(silaba)
                     #silaba = ""
-                    indice += 2
+                    indice += 1
                 elif es_consonante(siguiente_letra): # la siguiente letra es una consonante                     
                     if es_grupo_consonantico(letra, siguiente_letra):
+                        if silaba != "":
+                            silabas.append(silaba)
+                            silaba = ""
                         silaba += letra
                         silaba += siguiente_letra
                         indice += 1

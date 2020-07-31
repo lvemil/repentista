@@ -15,6 +15,7 @@ class TestSilabrador(unittest.TestCase):
     # c + v : 
     # Las consonantes solas no forman sílabas
     def test_2(self): 
+        r0 = separar_silabas("corría")
         r1 = separar_silabas("mano")
         r2 = separar_silabas("pena")
         self.assertEqual(len(r1), 2)
@@ -226,6 +227,8 @@ class TestAcentuador(unittest.TestCase):
         self.assertEqual(r, TipoAcentuacion.MONOSILABA)
 
     def test_ultima_vocal_tonica(self):
+        r = ultima_vocal_tonica("cifra")
+        self.assertEqual(r, 2)
         r = ultima_vocal_tonica("revolución")
         self.assertEqual(r, 9)
         r = ultima_vocal_tonica("revés")
@@ -263,3 +266,4 @@ class TestRima(unittest.TestCase):
                     "capturo de tus retinas",
                     "ese momento de amor."]
         rima = rima_poema(poema)
+        self.assertEqual(rima, ['a', 'b', 'b', 'a', 'a', 'c', 'c', 'd', 'd', 'c'])
