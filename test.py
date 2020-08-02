@@ -4,7 +4,7 @@ import logging
 from repentista.silabeador import separar_silabas
 from repentista.metrica import medir_verso
 from repentista.acentuacion import silaba_tonica, tipo_palabra, ultima_vocal_tonica, TipoAcentuacion
-from repentista.rima import rima_verso, rima_poema, TipoRima
+from repentista.rima import rima_verso, rima_poema, TipoRima, riman_con
 
 def setUpModule():
     logging.basicConfig(level=logging.DEBUG)
@@ -267,3 +267,7 @@ class TestRima(unittest.TestCase):
                     "ese momento de amor."]
         rima = rima_poema(poema)
         self.assertEqual(rima, ['a', 'b', 'b', 'a', 'a', 'c', 'c', 'd', 'd', 'c'])
+
+    def test_rima_con(self):
+        consonante, asonante = riman_con("canción", "data/palabras.db")
+        print(consonante, asonante)

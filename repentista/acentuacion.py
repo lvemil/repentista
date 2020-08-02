@@ -50,3 +50,9 @@ def ultima_vocal_tonica(palabra):
         if silaba[i] in "[aeiouáéíóú]":
             indice = len(palabra) - (len(silaba) - i + sum([len(s) for s in silabas[no:]])) + 1
             return indice
+
+def separar_vocal_tonica(palabra):
+    vocal = ultima_vocal_tonica(palabra)
+    terminacion = palabra[vocal-1:]
+    inicio = palabra[:vocal-1]
+    return inicio, terminacion

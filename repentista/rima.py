@@ -1,9 +1,11 @@
 import logging
 import re
 from enum import Enum
+import sqlite3
+from sqlite3 import Error
 
 from repentista.silabeador import separar_silabas
-from repentista.acentuacion import ultima_vocal_tonica
+from repentista.acentuacion import ultima_vocal_tonica, separar_vocal_tonica
 from repentista import utiles
 
 class TipoRima(Enum):
@@ -22,7 +24,9 @@ def rima_palabra(palabra1, palabra2):
     else:
         t1 = "".join(re.findall("[aeiouáéíóú]", terminacion1))
         t2 = "".join(re.findall("[aeiouáéíóú]", terminacion2))
-        return t1 == t2
+        if t1 == t2:
+            return TipoRima.ASONANTE
+    return False
 
 def rima_verso(verso1, verso2):   
     verso1 = utiles.limpiar(verso1)
@@ -49,5 +53,30 @@ def rima_poema(poema):
         i_letra += 1
     return rima
 
-            
+def riman_con(palabra,db):
+    _,terminacion = separar_vocal_tonica(palabra)
+    vocales = "".join(re.findall("[aeiouáéíóú]", terminacion))
+    try:
+        con = sqlite3.connect(db)
+        cur = con.cursor()
+        
+        # buscar palabras con rima consonante
+        sql = f"SELECT palabras FROM palabras WHERE terminacion = '{terminacion}'"
+        cur.execute(sql)
+        palabras = cur.fetchall()
+        if palabras:
+            consonante = [p + terminacion for p in palabras[0][0].split(",")]
+
+        # buscar palabras con rima asonante
+        sql = f"SELECT terminacion, palabras FROM palabras WHERE vocales = '{vocales}' AND terminacion <> '{terminacion}'"
+        cur.execute(sql)
+        palabras = cur.fetchall()
+        asonante = []
+        for r in palabras:
+            asonante += [p + r[0] for p in r[1].split(",")]
+        return consonante, asonante
+    except Error as e:
+        print(e)
+    finally:
+        con.close()
             
