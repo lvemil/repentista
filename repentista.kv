@@ -1,0 +1,61 @@
+#:kivy 1.11.1
+#: import utils kivy.utils
+#: set background_color         "#FFFFFF"
+#: set font_color               "#000000"
+#: set background_color2        "#FF0000"
+
+<PantallaInicio>:
+    gl_decimas: gl_decimas
+    sv_decimas: sv_decimas
+    canvas.before:
+        Color:
+            rgba: utils.get_color_from_hex(background_color)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    FloatLayout:
+        Label:
+            text: "repentista"
+            halign: 'center'            
+            size_hint: 1, .05
+            pos_hint: {"x":0,"top":1}
+            font_size: dp(30)
+            color: utils.get_color_from_hex(font_color)
+        ScrollView:  
+            id: sv_decimas          
+            pos_hint: {"x":.05,"top":.9}
+            size_hint: 0.9, 0.8
+            do_scroll_y: True
+            do_scroll_x: False
+            bar_width: 10
+            GridLayout:
+                id: gl_decimas
+                cols: 1
+                size_hint_y: None
+                spacing: dp(5)
+                padding: dp(10)
+                height: self.minimum_height
+        Button:
+            text: "+"
+            size_hint: .5, .05
+            pos_hint: {"x":.25,"top":0.1}
+            font_size: dp(30)
+            color: utils.get_color_from_hex(font_color)
+
+<TarjetaDecima>:
+    size_hint_y: None
+    height: dp(60)
+    BoxLayout:        
+        orientation: 'vertical'
+        Label:
+            halign: 'left'
+            text: root.titulo
+            font_size: dp(20)
+            color: utils.get_color_from_hex(font_color)
+            text_size: self.size
+        Label:
+            halign: 'left'
+            text: root.verso
+            font_size: dp(15)
+            color: utils.get_color_from_hex(font_color)
+            text_size: self.size
