@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from kivy.uix.screenmanager import Screen
 from kivy.uix.label import Label
 from kivy.properties import ObjectProperty
@@ -19,4 +21,6 @@ class PantallaInicio(Screen):
             d = TarjetaDecima()
             d.titulo = p[1]
             d.verso = (p[2].splitlines()[0] + "...") if p[2] else "[vacio]"
+            m = datetime.strptime(p[3], "%Y-%m-%d %H:%M:%S")
+            d.modificado = m.strftime("%d/%m/%Y")
             self.gl_decimas.add_widget(d)

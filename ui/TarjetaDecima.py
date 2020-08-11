@@ -7,7 +7,8 @@ from kivy.uix.label import Label
 class TarjetaDecima(ButtonBehavior, BoxLayout):
     titulo = StringProperty()
     verso = StringProperty()
-    
+    modificado = StringProperty()
+
     def __init__(self, **kwargs):
         super(TarjetaDecima, self).__init__(**kwargs)
 
