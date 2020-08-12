@@ -8,11 +8,12 @@ class Poema:
         self.cuerpo = cuerpo
 
     @staticmethod
-    def ObtenerTodos(db):
+    def ObtenerTodos(db, orden = "DESC"):
+        assert orden in ["DESC", "ASC"]
         try:
             con = sqlite3.connect(db)
             cur = con.cursor()
-            sql = f"SELECT * FROM poema"
+            sql = f"SELECT * FROM poema ORDER BY modificado {orden}"
             cur.execute(sql)
             poemas = cur.fetchall()
             return poemas

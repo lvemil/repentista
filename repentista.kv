@@ -47,6 +47,7 @@
             pos_hint: {"x":.4,"top":0.1}
             font_size: dp(20)
             color: utils.get_color_from_hex(font_color)
+            on_press: root.btn_orden_on_press()
         Button:
             text: "Ayuda"
             size_hint: .2, .05

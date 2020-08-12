@@ -16,7 +16,16 @@ class PantallaInicio(Screen):
         self.on_enter = self.do_on_enter
 
     def do_on_enter(self):
-        poemas = Poema.ObtenerTodos("data/repentista.db")
+        self.orden = "DESC"
+        self.mostrar_poemas()
+
+    def btn_orden_on_press(self):
+        self.orden = "DESC" if self.orden == "ASC" else "ASC"
+        self.mostrar_poemas()
+    
+    def mostrar_poemas(self):
+        poemas = Poema.ObtenerTodos("data/repentista.db", self.orden)
+        self.gl_decimas.clear_widgets()
         for p in poemas:
             d = TarjetaDecima()
             d.titulo = p[1]
