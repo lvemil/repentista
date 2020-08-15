@@ -97,8 +97,10 @@ class TestSilabrador(unittest.TestCase):
     def test_10(self):
         r1 = separar_silabas("adherir")
         r2 = separar_silabas("hembra")
+        r3 = separar_silabas("mucho")
         self.assertEqual(len(r1), 3)
         self.assertEqual(len(r2), 2)
+        self.assertEqual(len(r3), 2)
     
     # qu
     # Nunca se separa la qu.
@@ -190,6 +192,8 @@ class TestMetrica(unittest.TestCase):
         self.assertEqual(r['medida'], 14)
         r = medir_verso("María andaba jugando a las diez")        
         self.assertEqual(r['medida'], 10)
+        #r = medir_verso("María andaba jugando a las diez")        
+        #self.assertEqual(r['medida'], 10)
 
 class TestAcentuador(unittest.TestCase):
     def test_silaba_tonica(self):

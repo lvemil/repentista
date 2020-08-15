@@ -140,3 +140,33 @@
             font_size: dp(15)
             color: utils.get_color_from_hex(font_color)
             text_size: self.size
+
+<Verso>:
+    txt_texto: txt_texto 
+    size_hint_y: None
+    height: dp(30)
+    BoxLayout:
+        orientation: 'horizontal'
+        Label:
+            halign: 'center'
+            size_hint_x: .05
+            text: str(root.num)
+            font_size: dp(15)
+            color: utils.get_color_from_hex(font_color)
+            text_size: self.size
+        TextInput:
+            id: txt_texto
+            halign: 'left'
+            size_hint_x: .9
+            text: root.texto
+            font_size: dp(15)
+            color: utils.get_color_from_hex(font_color)
+            multiline: False
+            on_text: root.txt_texto_on_text()
+        Label:
+            halign: 'center'
+            size_hint_x: .05
+            text: root.metrica
+            font_size: dp(15)
+            color: utils.get_color_from_hex(font_color)
+            text_size: self.size

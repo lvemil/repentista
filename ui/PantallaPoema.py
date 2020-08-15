@@ -7,6 +7,7 @@ from kivy.properties import ObjectProperty, StringProperty
 from kivy.utils import get_color_from_hex
 
 from ui.TarjetaDecima import TarjetaDecima
+from ui.Verso import Verso
 from modelo.Poema import Poema
 
 class PantallaPoema(Screen):
@@ -26,12 +27,20 @@ class PantallaPoema(Screen):
         self.id = self.manager.id_poema
         p = Poema.Obtener("data/repentista.db", self.id)
         self.titulo = p.titulo
-        self.cuerpo = p.cuerpo
+        self.cuerpo = p.cuerpo if p.cuerpo else ""
         self.modificado = p.modificado
-        versos = p.cuerpo.splitlines()
+        versos = self.cuerpo.splitlines()
         self.gl_versos.clear_widgets()
         for v in versos:
-            self.gl_versos.add_widget(TextInput(text = v, size_hint_y = None, height = 60))
-    
+            self.adicionar_verso(v)    
+        self.adicionar_verso("")
+
+    def adicionar_verso(self, texto = ''):
+        w = Verso()
+        w.texto = texto
+        w.pantalla = self
+        w.num = len(self.gl_versos.children) + 1
+        self.gl_versos.add_widget(w)
+
     def btn_atras_on_press(self):
         self.manager.current = "inicio"
