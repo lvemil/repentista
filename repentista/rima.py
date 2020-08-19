@@ -38,20 +38,26 @@ def rima_verso(verso1, verso2):
     return rima_palabra(palabra1, palabra2)
 
 def rima_poema(poema):
-    rima = [None] * len(poema)
-    letras = 'abcdefghijklmnopqrstuvwxyz'
-    i_letra = 0
-    for i in range(len(poema) - 1):
-        if rima[i]:
-            continue
-        for j in range(i+1, len(poema), 1):
-            if rima[j]:
-                continue
-            if rima_verso(poema[i], poema[j]):
-                rima[i] = letras[i_letra]
-                rima[j] = letras[i_letra]
-        i_letra += 1
-    return rima
+    if poema:
+        if len(poema) == 1:
+            return ["a"]
+        else:
+            rima = [""] * len(poema)
+            letras = 'abcdefghijklmnopqrstuvwxyz'
+            i_letra = 0
+            for i in range(len(poema) - 1):
+                if rima[i]:
+                    continue
+                for j in range(i+1, len(poema), 1):
+                    if rima[j]:
+                        continue
+                    if rima_verso(poema[i], poema[j]):
+                        rima[i] = letras[i_letra]
+                        rima[j] = letras[i_letra]
+                i_letra += 1
+            return rima
+    else:
+        return None
 
 def riman_con(palabra,db):
     _,terminacion = separar_vocal_tonica(palabra)

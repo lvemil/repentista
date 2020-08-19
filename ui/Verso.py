@@ -10,8 +10,8 @@ class Verso(BoxLayout):
     num = NumericProperty()
     texto = StringProperty()
     metrica = StringProperty()
+    rima = StringProperty()
     txt_texto = ObjectProperty()
-    rima = ObjectProperty()
     ultimo = NumericProperty ()
     pantalla = ObjectProperty()
 
@@ -29,6 +29,8 @@ class Verso(BoxLayout):
 
     def txt_texto_on_text(self):
         self.texto = self.txt_texto.text.strip()
+        if self.texto:
+            self.pantalla.buscar_rima()
         if self.ultimo == 1 and self.texto:
             self.ultimo = 0
             self.pantalla.adicionar_verso()

@@ -157,7 +157,7 @@
         TextInput:
             id: txt_texto
             halign: 'left'
-            size_hint_x: .9
+            size_hint_x: .85
             text: root.texto
             font_size: dp(15)
             color: utils.get_color_from_hex(font_color)
@@ -167,6 +167,13 @@
             halign: 'center'
             size_hint_x: .05
             text: root.metrica
+            font_size: dp(15)
+            color: utils.get_color_from_hex(font_color)
+            text_size: self.size
+        Label:
+            halign: 'center'
+            size_hint_x: .05
+            text: root.rima
             font_size: dp(15)
             color: utils.get_color_from_hex(font_color)
             text_size: self.size
