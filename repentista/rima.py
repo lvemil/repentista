@@ -14,19 +14,21 @@ class TipoRima(Enum):
 
 def rima_palabra(palabra1, palabra2):
     vocal1 = ultima_vocal_tonica(palabra1)
-    terminacion1 = palabra1[vocal1-1:]
-
     vocal2 = ultima_vocal_tonica(palabra2)
-    terminacion2 = palabra2[vocal2-1:]
 
-    if terminacion1 == terminacion2:
-        return TipoRima.CONSONATE
-    else:
-        t1 = "".join(re.findall("[aeiouáéíóú]", terminacion1))
-        t2 = "".join(re.findall("[aeiouáéíóú]", terminacion2))
-        if t1 == t2:
-            return TipoRima.ASONANTE
-    return False
+    if vocal1 and vocal2:
+        terminacion1 = palabra1[vocal1-1:]
+        terminacion2 = palabra2[vocal2-1:]
+
+        if terminacion1 == terminacion2:
+            return TipoRima.CONSONATE
+        else:
+            t1 = "".join(re.findall("[aeiouáéíóú]", terminacion1))
+            t2 = "".join(re.findall("[aeiouáéíóú]", terminacion2))
+            if t1 == t2:
+                return TipoRima.ASONANTE
+    
+    return False    
 
 def rima_verso(verso1, verso2):   
     verso1 = utiles.limpiar(verso1)

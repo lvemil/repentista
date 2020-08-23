@@ -24,8 +24,11 @@ class Verso(BoxLayout):
         self.manager.current = 'poema'
 
     def on_texto(self, instance, value):
-        m = medir_verso(value)
-        self.metrica = str(m["medida"])
+        print(value)
+        if value:
+            m = medir_verso(value)
+            if m:
+                self.metrica = str(m["medida"])
 
     def txt_texto_on_text(self):
         self.texto = self.txt_texto.text.strip()
@@ -34,3 +37,6 @@ class Verso(BoxLayout):
         if self.ultimo == 1 and self.texto:
             self.ultimo = 0
             self.pantalla.adicionar_verso()
+
+    def txt_texto_on_key_down(self):
+        print("key down")

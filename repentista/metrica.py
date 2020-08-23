@@ -20,6 +20,8 @@ def medir_verso(verso):
     res = {}
     # medir verso
     verso = verso.translate(str.maketrans('', '', '¡!"#$%&\'()*+,-./:;<=>¿?@[\\]^_`{|}~'))
+    if not verso:
+        return None
     palabras = verso.split(" ")
     silabas_gramaticales = []
     for palabra in palabras:
