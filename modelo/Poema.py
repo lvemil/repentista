@@ -1,5 +1,7 @@
 import sqlite3
 from sqlite3 import Error
+import uuid
+import datetime
 
 class Poema:
     
@@ -44,6 +46,24 @@ class Poema:
             con.close()
 
     @staticmethod
-    def Guardar(poema):
-        pass
+    def Guardar(db, poema):
+        assert poema
+        try:
+            cuerpo = "\n".join(poema.cuerpo)     
+            con = sqlite3.connect(db)
+            cur = con.cursor()
+            modificado = datetime.datetime.now()
+            if poema.id:
+                sql = f"UPDATE poema SET Cuerpo = '{cuerpo}', Titulo = '{poema.titulo}', Modificado = '{modificado}' WHERE id = '{poema.id}'"
+            else:
+                id = uuid.uuid4()                
+                sql = f"INSERT INTO poema (ID, Titulo, Cuerpo, Modificado) VALUES ('{id}','{poema.titulo}','{cuerpo}','{modificado}')"
+
+            cur.execute(sql)
+            con.commit()
+        except Error as e:
+            print(e)
+            return None
+        finally:
+            con.close()
 

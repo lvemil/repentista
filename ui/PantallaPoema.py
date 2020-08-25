@@ -23,6 +23,10 @@ class PantallaPoema(Screen):
     def __init__(self, **kwargs):
         super(PantallaPoema, self).__init__(**kwargs)
         self.on_enter = self.do_on_enter
+        self.on_pre_leave = self.do_on_pre_leave
+
+    def btn_atras_on_press(self):
+        self.manager.current = 'inicio'
 
     def do_on_enter(self):
         self.id = self.manager.id_poema
@@ -35,6 +39,18 @@ class PantallaPoema(Screen):
         for v in versos:
             self.adicionar_verso(v)    
         self.adicionar_verso("")
+
+    def do_on_pre_leave(self):
+        self.salvar_poema()
+
+    def salvar_poema(self):
+        versos = list(reversed([v.texto for v in self.gl_versos.children]))
+        cuerpo = versos if versos[-1] else versos[:-1]
+        p = Poema()
+        p.id = self.id
+        p.titulo = self.titulo
+        p.cuerpo = cuerpo
+        r = Poema.Guardar("data/repentista.db", p)
 
     def adicionar_verso(self, texto = ''):
         w = Verso()
@@ -51,5 +67,3 @@ class PantallaPoema(Screen):
         for i, r in enumerate(reversed(rima)):
             self.gl_versos.children[i+o].rima = r
 
-    def btn_atras_on_press(self):
-        self.manager.current = "inicio"
