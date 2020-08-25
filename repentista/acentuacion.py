@@ -43,6 +43,8 @@ def tipo_palabra(palabra):
             return TipoAcentuacion.SOBRE_ESDRUJULA
 
 def ultima_vocal_tonica(palabra):
+    if not palabra:
+        return None
     silabas, no = silaba_tonica(palabra)
     silaba = silabas[no-1]
     

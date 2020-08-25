@@ -52,7 +52,7 @@ class Poema:
             cuerpo = "\n".join(poema.cuerpo)     
             con = sqlite3.connect(db)
             cur = con.cursor()
-            modificado = datetime.datetime.now()
+            modificado = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             if poema.id:
                 sql = f"UPDATE poema SET Cuerpo = '{cuerpo}', Titulo = '{poema.titulo}', Modificado = '{modificado}' WHERE id = '{poema.id}'"
             else:

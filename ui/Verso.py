@@ -34,7 +34,7 @@ class Verso(BoxLayout):
         self.texto = self.txt_texto.text.strip()
         if self.texto:
             self.pantalla.buscar_rima()
-        if self.ultimo == 1 and self.texto:
+        if self.ultimo == 1 and self.texto and self.pantalla.estado == "editando":
             self.ultimo = 0
             self.pantalla.adicionar_verso()
 
