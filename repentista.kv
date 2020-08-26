@@ -41,6 +41,7 @@
             pos_hint: {"x":.2,"top":0.1}
             font_size: dp(30)
             color: utils.get_color_from_hex(font_color)
+            on_press: root.btn_nuevo_on_press()
         Button:
             text: "Orden"
             size_hint: .2, .05

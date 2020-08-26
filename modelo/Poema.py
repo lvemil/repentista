@@ -32,8 +32,8 @@ class Poema:
         try:
             con = sqlite3.connect(db)
             cur = con.cursor()
-            sql = f"SELECT * FROM poema where id = '{id}'"
-            cur.execute(sql)
+            sql = f"SELECT * FROM poema where id = ?"
+            cur.execute(sql, [id])
             poemas = cur.fetchall()
             if poemas:
                 p = Poema(poemas[0][0],poemas[0][1], poemas[0][2], poemas[0][3])
@@ -54,12 +54,13 @@ class Poema:
             cur = con.cursor()
             modificado = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             if poema.id:
-                sql = f"UPDATE poema SET Cuerpo = '{cuerpo}', Titulo = '{poema.titulo}', Modificado = '{modificado}' WHERE id = '{poema.id}'"
+                sql = f"UPDATE poema SET Cuerpo = ?, Titulo = ?, Modificado = ? WHERE id = ?"
+                cur.execute(sql, [cuerpo, poema.titulo, modificado, poema.id])
             else:
-                id = uuid.uuid4()                
-                sql = f"INSERT INTO poema (ID, Titulo, Cuerpo, Modificado) VALUES ('{id}','{poema.titulo}','{cuerpo}','{modificado}')"
-
-            cur.execute(sql)
+                id = str(uuid.uuid1())                
+                sql = f"INSERT INTO poema (ID, Titulo, Cuerpo, Modificado) VALUES (?, ?, ?, ?)"
+                cur.execute(sql, [id, poema.titulo, cuerpo, modificado])
+            
             con.commit()
         except Error as e:
             print(e)

@@ -22,6 +22,10 @@ class PantallaInicio(Screen):
     def btn_orden_on_press(self):
         self.orden = "DESC" if self.orden == "ASC" else "ASC"
         self.mostrar_poemas()
+
+    def btn_nuevo_on_press(self):
+        self.manager.id_poema = None
+        self.manager.current = 'poema'
     
     def mostrar_poemas(self):
         poemas = Poema.ObtenerTodos("data/repentista.db", self.orden)

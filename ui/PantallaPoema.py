@@ -31,16 +31,22 @@ class PantallaPoema(Screen):
         self.manager.current = 'inicio'
 
     def do_on_enter(self):
-        self.id = self.manager.id_poema
-        p = Poema.Obtener("data/repentista.db", self.id)
-        self.titulo = p.titulo
-        self.cuerpo = p.cuerpo if p.cuerpo else ""
-        self.modificado = p.modificado
-        versos = self.cuerpo.splitlines()
-        self.gl_versos.clear_widgets()
-        self.estado = "cargando"
-        for v in versos:
-            self.adicionar_verso(v)    
+        if self.manager.id_poema:
+            self.id = self.manager.id_poema
+            p = Poema.Obtener("data/repentista.db", self.id)
+            self.titulo = p.titulo
+            self.cuerpo = p.cuerpo if p.cuerpo else ""
+            self.modificado = p.modificado
+            versos = self.cuerpo.splitlines()
+            self.gl_versos.clear_widgets()
+            self.estado = "cargando"
+            for v in versos:
+                self.adicionar_verso(v)    
+        else:
+            self.id = ""
+            self.titulo = "Nuevo poema"
+            self.cuerpo = ""
+            self.modificado = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.adicionar_verso("")
         self.estado = "editando"
 
