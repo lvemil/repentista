@@ -58,6 +58,7 @@
 <PantallaPoema>:
     gl_versos: gl_versos
     sv_versos: sv_versos
+    txt_titulo: txt_titulo
     canvas.before:
         Color:
             rgba: utils.get_color_from_hex(background_color)
@@ -66,6 +67,7 @@
             size: self.size
     FloatLayout:
         TextInput:
+            id: txt_titulo
             text: root.titulo
             halign: 'center'            
             size_hint: 1, .1

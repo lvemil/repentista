@@ -14,7 +14,8 @@ from repentista.rima import rima_poema
 class PantallaPoema(Screen):
     gl_decimas = ObjectProperty()
     sv_decimas = ObjectProperty()
-    
+    txt_titulo = ObjectProperty()
+
     id = StringProperty()
     titulo = StringProperty()
     cuerpo = StringProperty()
@@ -49,10 +50,7 @@ class PantallaPoema(Screen):
     def salvar_poema(self):
         versos = list(reversed([v.texto for v in self.gl_versos.children]))
         cuerpo = versos if versos[-1] else versos[:-1]
-        p = Poema()
-        p.id = self.id
-        p.titulo = self.titulo
-        p.cuerpo = cuerpo
+        p = Poema(id = self.id, titulo = self.txt_titulo.text, cuerpo = cuerpo)
         r = Poema.Guardar("data/repentista.db", p)
 
     def adicionar_verso(self, texto = ''):
