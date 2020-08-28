@@ -49,6 +49,7 @@ class PantallaPoema(Screen):
             self.modificado = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.adicionar_verso("")
         self.estado = "editando"
+        self.buscar_rima()
 
     def do_on_pre_leave(self):
         self.salvar_poema()
@@ -67,11 +68,12 @@ class PantallaPoema(Screen):
         self.gl_versos.add_widget(w)
 
     def buscar_rima(self):
-        versos = list(reversed([v.texto for v in self.gl_versos.children]))
-        if versos:
-            versos = versos if versos[-1] else versos[:-1]
-            rima = rima_poema(versos)
-            o = 0 if self.gl_versos.children[0].texto else 1 
-            for i, r in enumerate(reversed(rima)):
-                self.gl_versos.children[i+o].rima = r
+        if self.estado == "editando":
+            versos = list(reversed([v.texto for v in self.gl_versos.children]))
+            if versos:
+                versos = versos if versos[-1] else versos[:-1]
+                rima = rima_poema(versos)
+                o = 0 if self.gl_versos.children[0].texto else 1 
+                for i, r in enumerate(reversed(rima)):
+                    self.gl_versos.children[i+o].rima = r
 
