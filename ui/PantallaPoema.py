@@ -1,10 +1,12 @@
 from datetime import datetime
+import logging
 
 from kivy.uix.screenmanager import Screen
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.utils import get_color_from_hex
+from kivy.clock import Clock
 
 from ui.TarjetaDecima import TarjetaDecima
 from ui.Verso import Verso
@@ -27,8 +29,14 @@ class PantallaPoema(Screen):
         self.on_enter = self.do_on_enter
         self.on_pre_leave = self.do_on_pre_leave
 
+    def on_estado(self, instance, value):
+        print(value)
+
     def btn_atras_on_press(self):
         self.manager.current = 'inicio'
+
+    def auto_guardar(self, dt):
+        self.guardar_poema()
 
     def do_on_enter(self):
         if self.manager.id_poema:
@@ -41,34 +49,40 @@ class PantallaPoema(Screen):
             self.gl_versos.clear_widgets()
             self.estado = "cargando"
             for v in versos:
-                self.adicionar_verso(v)    
+                self.adicionar_verso(texto = v, ultimo = 0)    
         else:
             self.id = ""
             self.titulo = "Nuevo poema"
             self.cuerpo = ""
             self.modificado = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.adicionar_verso("")
+        self.adicionar_verso(texto = "", ultimo=1)
         self.estado = "editando"
         self.buscar_rima()
+        self.__clock_event = Clock.schedule_interval(self.auto_guardar, 5)
 
     def do_on_pre_leave(self):
-        self.salvar_poema()
+        self.guardar_poema()
 
-    def salvar_poema(self):
-        versos = list(reversed([v.texto for v in self.gl_versos.children]))
-        cuerpo = versos if versos[-1] else versos[:-1]
-        p = Poema(id = self.id, titulo = self.txt_titulo.text, cuerpo = cuerpo)
-        r = Poema.Guardar("data/repentista.db", p)
+    def guardar_poema(self):
+        if self.estado == "modificado":
+            print("guardando...")
+            versos = list(reversed([v.texto for v in self.gl_versos.children]))
+            cuerpo = versos if versos[-1] else versos[:-1]
+            p = Poema(id = self.id, titulo = self.txt_titulo.text, cuerpo = cuerpo)
+            r = Poema.Guardar("data/repentista.db", p)
+            self.modificado = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            self.estado = "editando"
 
-    def adicionar_verso(self, texto = ''):
+    def adicionar_verso(self, texto = '', ultimo = 0):
         w = Verso()
         w.pantalla = self
         w.texto = texto
         w.num = len(self.gl_versos.children) + 1
+        w.ultimo = ultimo
         self.gl_versos.add_widget(w)
 
     def buscar_rima(self):
-        if self.estado == "editando":
+        if self.estado in ["editando", "modificado"]:
             versos = list(reversed([v.texto for v in self.gl_versos.children]))
             if versos:
                 versos = versos if versos[-1] else versos[:-1]

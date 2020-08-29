@@ -17,7 +17,6 @@ class Verso(BoxLayout):
 
     def __init__(self, **kwargs):
         super(Verso, self).__init__(**kwargs)
-        self.ultimo = 1
 
     def on_press(self):
         self.manager.id_poema = self.id
@@ -29,14 +28,13 @@ class Verso(BoxLayout):
             m = medir_verso(value)
             if m:
                 self.metrica = str(m["medida"])
+            self.pantalla.buscar_rima()
+            if self.pantalla.estado == "editando":
+                self.pantalla.estado = "modificado"
 
     def txt_texto_on_text(self):
         self.texto = self.txt_texto.text.strip()
-        if self.texto:
-            self.pantalla.buscar_rima()
-        if self.ultimo == 1 and self.texto and self.pantalla.estado == "editando":
+        if self.ultimo == 1 and self.texto and self.pantalla.estado in ["editando", "modificado"]:
             self.ultimo = 0
             self.pantalla.adicionar_verso()
 
-    def txt_texto_on_key_down(self):
-        print("key down")
