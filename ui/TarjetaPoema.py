@@ -4,7 +4,7 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.properties import StringProperty, ObjectProperty
 from kivy.uix.label import Label
 
-class TarjetaDecima(ButtonBehavior, BoxLayout):
+class TarjetaPoema(ButtonBehavior, BoxLayout):
     id = StringProperty()
     titulo = StringProperty()
     verso = StringProperty()
@@ -12,7 +12,7 @@ class TarjetaDecima(ButtonBehavior, BoxLayout):
     manager = ObjectProperty()
 
     def __init__(self, **kwargs):
-        super(TarjetaDecima, self).__init__(**kwargs)
+        super(TarjetaPoema, self).__init__(**kwargs)
 
     def on_press(self):
         self.manager.id_poema = self.id

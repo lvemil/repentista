@@ -5,8 +5,8 @@
 #: set background_color2        "#FF0000"
 
 <PantallaInicio>:
-    gl_decimas: gl_decimas
-    sv_decimas: sv_decimas
+    gl_poemas: gl_poemas
+    sv_poemas: sv_poemas
     canvas.before:
         Color:
             rgba: utils.get_color_from_hex(background_color)
@@ -22,14 +22,14 @@
             font_size: dp(30)
             color: utils.get_color_from_hex(font_color)
         ScrollView:  
-            id: sv_decimas          
+            id: sv_poemas        
             pos_hint: {"x":.05,"top":.9}
             size_hint: 0.9, 0.8
             do_scroll_y: True
             do_scroll_x: False
             bar_width: 10
             GridLayout:
-                id: gl_decimas
+                id: gl_poemas
                 cols: 1
                 size_hint_y: None
                 spacing: dp(5)
@@ -109,6 +109,7 @@
             pos_hint: {"x":.4,"top":0.1}
             font_size: dp(20)
             color: utils.get_color_from_hex(font_color)
+            on_press: root.btn_eliminar_on_press()
         Button:
             text: "Ayuda"
             size_hint: .2, .05
@@ -116,7 +117,7 @@
             font_size: dp(20)
             color: utils.get_color_from_hex(font_color)
 
-<TarjetaDecima>:
+<TarjetaPoema>:
     size_hint_y: None
     height: dp(60)
     BoxLayout:
@@ -138,6 +139,7 @@
                 text_size: self.size
         Label:
             halign: 'left'
+            valign: 'center'
             size_hint_x: .3
             text: root.modificado
             font_size: dp(15)

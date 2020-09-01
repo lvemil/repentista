@@ -5,12 +5,12 @@ from kivy.uix.label import Label
 from kivy.properties import ObjectProperty
 from kivy.utils import get_color_from_hex
 
-from ui.TarjetaDecima import TarjetaDecima
+from ui.TarjetaPoema import TarjetaPoema
 from modelo.Poema import Poema
 
 class PantallaInicio(Screen):
-    gl_decimas = ObjectProperty()
-    sv_decimas = ObjectProperty()
+    gl_poemas = ObjectProperty()
+    sv_poemas = ObjectProperty()
     def __init__(self, **kwargs):
         super(PantallaInicio, self).__init__(**kwargs)
         self.on_enter = self.do_on_enter
@@ -29,13 +29,13 @@ class PantallaInicio(Screen):
     
     def mostrar_poemas(self):
         poemas = Poema.ObtenerTodos("data/repentista.db", self.orden)
-        self.gl_decimas.clear_widgets()
+        self.gl_poemas.clear_widgets()
         for p in poemas:
-            d = TarjetaDecima()
+            d = TarjetaPoema()
             d.manager = self.manager
             d.id = p[0]
             d.titulo = p[1]
             d.verso = (p[2].splitlines()[0] + "...") if p[2] else "[vacio]"
             m = datetime.strptime(p[3], "%Y-%m-%d %H:%M:%S")
             d.modificado = m.strftime("%d/%m/%Y")
-            self.gl_decimas.add_widget(d)
+            self.gl_poemas.add_widget(d)

@@ -12,12 +12,15 @@ class Poema:
         self.modificado = modificado
 
     @staticmethod
-    def ObtenerTodos(db, orden = "DESC"):
+    def ObtenerTodos(db, orden = "DESC", eliminados = False):
         assert orden in ["DESC", "ASC"]
         try:
             con = sqlite3.connect(db)
             cur = con.cursor()
-            sql = f"SELECT * FROM poema ORDER BY modificado {orden}"
+            if eliminados:
+                sql = f"SELECT * FROM poema ORDER BY modificado {orden}"
+            else:
+                sql = f"SELECT * FROM poema WHERE Eliminado = 0 ORDER BY modificado {orden}"
             cur.execute(sql)
             poemas = cur.fetchall()
             return poemas
@@ -68,3 +71,17 @@ class Poema:
         finally:
             con.close()
 
+    @staticmethod
+    def Eliminar(db, id):
+        assert id
+        try:  
+            con = sqlite3.connect(db)
+            cur = con.cursor()
+            sql = f"UPDATE poema SET Eliminado = 1 WHERE id = ?"
+            cur.execute(sql, [id])            
+            con.commit()
+        except Error as e:
+            print(e)
+            return None
+        finally:
+            con.close()

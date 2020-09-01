@@ -8,7 +8,7 @@ from kivy.properties import ObjectProperty, StringProperty
 from kivy.utils import get_color_from_hex
 from kivy.clock import Clock
 
-from ui.TarjetaDecima import TarjetaDecima
+from ui.TarjetaPoema import TarjetaPoema
 from ui.Verso import Verso
 from modelo.Poema import Poema
 from repentista.rima import rima_poema
@@ -35,6 +35,9 @@ class PantallaPoema(Screen):
     def btn_atras_on_press(self):
         self.manager.current = 'inicio'
 
+    def btn_eliminar_on_press(self):
+        self.eliminar_poema()
+
     def auto_guardar(self, dt):
         self.guardar_poema()
 
@@ -58,7 +61,7 @@ class PantallaPoema(Screen):
         self.adicionar_verso(texto = "", ultimo=1)
         self.estado = "editando"
         self.buscar_rima()
-        self.__clock_event = Clock.schedule_interval(self.auto_guardar, 5)
+        self.__clock_event = Clock.schedule_interval(self.auto_guardar, 60)
 
     def do_on_pre_leave(self):
         self.guardar_poema()
@@ -72,6 +75,11 @@ class PantallaPoema(Screen):
             r = Poema.Guardar("data/repentista.db", p)
             self.modificado = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.estado = "editando"
+
+    def eliminar_poema(self):
+        Poema.Eliminar("data/repentista.db", self.id)
+        self.estado = "eliminado"
+        self.btn_atras_on_press()
 
     def adicionar_verso(self, texto = '', ultimo = 0):
         w = Verso()
@@ -87,7 +95,8 @@ class PantallaPoema(Screen):
             if versos:
                 versos = versos if versos[-1] else versos[:-1]
                 rima = rima_poema(versos)
-                o = 0 if self.gl_versos.children[0].texto else 1 
-                for i, r in enumerate(reversed(rima)):
-                    self.gl_versos.children[i+o].rima = r
+                if rima:
+                    o = 0 if self.gl_versos.children[0].texto else 1 
+                    for i, r in enumerate(reversed(rima)):
+                        self.gl_versos.children[i+o].rima = r
 
