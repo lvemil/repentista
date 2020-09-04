@@ -182,3 +182,33 @@
             font_size: dp(15)
             color: utils.get_color_from_hex(font_color)
             text_size: self.size
+
+<PantallaConfirmacion>:
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: utils.get_color_from_hex(background_color)
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            text: "Seguro?"
+            halign: 'center'            
+            size_hint: 1, .5
+            pos_hint: {"x":0,"top":0.75}
+            font_size: dp(20)
+            color: utils.get_color_from_hex(font_color)
+        Button:
+            text: "Si"
+            size_hint: .5, .2
+            pos_hint: {"x":.0,"top":.2}
+            font_size: dp(20)
+            color: utils.get_color_from_hex(font_color)
+            on_press: root.btn_si_on_press()
+        Button:
+            text: "No"
+            size_hint: .5, .2
+            pos_hint: {"x":.5,"top":.2}
+            font_size: dp(20)
+            color: utils.get_color_from_hex(font_color)
+            on_press: root.btn_no_on_press()

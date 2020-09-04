@@ -1,5 +1,7 @@
 from datetime import datetime
 import logging
+import functools
+
 
 from kivy.uix.screenmanager import Screen
 from kivy.uix.label import Label
@@ -9,9 +11,11 @@ from kivy.utils import get_color_from_hex
 from kivy.clock import Clock
 
 from ui.TarjetaPoema import TarjetaPoema
+from ui.PantallaConfirmacion import PantallaConfirmacion
 from ui.Verso import Verso
 from modelo.Poema import Poema
 from repentista.rima import rima_poema
+
 
 class PantallaPoema(Screen):
     gl_decimas = ObjectProperty()
@@ -36,7 +40,13 @@ class PantallaPoema(Screen):
         self.manager.current = 'inicio'
 
     def btn_eliminar_on_press(self):
-        self.eliminar_poema()
+        PantallaConfirmacion.mostrar(on_aceptar = lambda : {
+            self.eliminar_poema()
+        })        
+
+    def txt_titulo_on_text(self):
+        if self.pantalla.estado == "editando":
+            self.pantalla.estado = "modificado"
 
     def auto_guardar(self, dt):
         self.guardar_poema()
@@ -58,6 +68,7 @@ class PantallaPoema(Screen):
             self.titulo = "Nuevo poema"
             self.cuerpo = ""
             self.modificado = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            self.gl_versos.clear_widgets()
         self.adicionar_verso(texto = "", ultimo=1)
         self.estado = "editando"
         self.buscar_rima()
@@ -75,18 +86,18 @@ class PantallaPoema(Screen):
             r = Poema.Guardar("data/repentista.db", p)
             self.modificado = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.estado = "editando"
-
-    def eliminar_poema(self):
+    
+    def eliminar_poema(self):        
         Poema.Eliminar("data/repentista.db", self.id)
         self.estado = "eliminado"
         self.btn_atras_on_press()
-
+        
     def adicionar_verso(self, texto = '', ultimo = 0):
         w = Verso()
         w.pantalla = self
         w.texto = texto
         w.num = len(self.gl_versos.children) + 1
-        w.ultimo = ultimo
+        w.ultimo = 1
         self.gl_versos.add_widget(w)
 
     def buscar_rima(self):

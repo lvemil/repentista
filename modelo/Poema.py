@@ -61,7 +61,7 @@ class Poema:
                 cur.execute(sql, [cuerpo, poema.titulo, modificado, poema.id])
             else:
                 id = str(uuid.uuid1())                
-                sql = f"INSERT INTO poema (ID, Titulo, Cuerpo, Modificado) VALUES (?, ?, ?, ?)"
+                sql = f"INSERT INTO poema (ID, Titulo, Cuerpo, Modificado, Eliminado) VALUES (?, ?, ?, ?, 0)"
                 cur.execute(sql, [id, poema.titulo, cuerpo, modificado])
             
             con.commit()
