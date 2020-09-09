@@ -24,6 +24,7 @@ class PantallaPoema(Screen):
 
     id = StringProperty()
     titulo = StringProperty()
+    composicion = StringProperty()
     cuerpo = StringProperty()
     modificado = StringProperty()
     estado = StringProperty()
@@ -45,8 +46,8 @@ class PantallaPoema(Screen):
         })        
 
     def txt_titulo_on_text(self):
-        if self.pantalla.estado == "editando":
-            self.pantalla.estado = "modificado"
+        if self.estado == "editando":
+            self.estado = "modificado"
 
     def auto_guardar(self, dt):
         self.guardar_poema()
@@ -67,6 +68,7 @@ class PantallaPoema(Screen):
             self.id = ""
             self.titulo = "Nuevo poema"
             self.cuerpo = ""
+            self.composicion = self.manager.composicion
             self.modificado = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.gl_versos.clear_widgets()
         self.adicionar_verso(texto = "", ultimo=1)

@@ -75,11 +75,19 @@
             pos_hint: {"x":0,"top":1}
             font_size: dp(30)
             color: utils.get_color_from_hex(font_color)
+            on_text: root.txt_titulo_on_text()
         Label:
             text: root.modificado
             halign: 'center'            
-            size_hint: 1, .05
+            size_hint: .5, .05
             pos_hint: {"x":0,"top":.9}
+            font_size: dp(10)
+            color: utils.get_color_from_hex(font_color)
+        Label:
+            text: root.composicion
+            halign: 'center'            
+            size_hint: .5, .05
+            pos_hint: {"x":.5,"top":.9}
             font_size: dp(10)
             color: utils.get_color_from_hex(font_color)
         ScrollView:  
@@ -116,6 +124,32 @@
             pos_hint: {"x":.6,"top":0.1}
             font_size: dp(20)
             color: utils.get_color_from_hex(font_color)
+
+<PantallaSeleccionarComposicion>:
+    gl_composiciones: gl_composiciones
+    sv_composiciones: sv_composiciones
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: utils.get_color_from_hex(background_color)
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        ScrollView:  
+            id: sv_composiciones      
+            pos_hint: {"x":.05,"top":.95}
+            size_hint: 0.9, 0.9
+            do_scroll_y: True
+            do_scroll_x: False
+            bar_width: 10
+            GridLayout:
+                id: gl_composiciones
+                cols: 1
+                size_hint_y: None
+                spacing: dp(5)
+                padding: dp(10)
+                height: self.minimum_height
+        
 
 <TarjetaPoema>:
     size_hint_y: None

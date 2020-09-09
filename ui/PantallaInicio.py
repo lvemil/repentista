@@ -6,6 +6,7 @@ from kivy.properties import ObjectProperty
 from kivy.utils import get_color_from_hex
 
 from ui.TarjetaPoema import TarjetaPoema
+from ui.PantallaSeleccionarComposicion import PantallaSeleccionarComposicion
 from modelo.Poema import Poema
 
 class PantallaInicio(Screen):
@@ -23,9 +24,13 @@ class PantallaInicio(Screen):
         self.orden = "DESC" if self.orden == "ASC" else "ASC"
         self.mostrar_poemas()
 
-    def btn_nuevo_on_press(self):
+    def on_seleccionar_composicion(self, composicion):
         self.manager.id_poema = None
+        self.manager.composicion = composicion
         self.manager.current = 'poema'
+
+    def btn_nuevo_on_press(self):
+        PantallaSeleccionarComposicion.mostrar(on_seleccionar=self.on_seleccionar_composicion)
     
     def mostrar_poemas(self):
         poemas = Poema.ObtenerTodos("data/repentista.db", self.orden)
