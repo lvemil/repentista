@@ -10,6 +10,8 @@ class Verso(BoxLayout):
     num = NumericProperty()
     texto = StringProperty()
     metrica = StringProperty()
+    rima_composicion = StringProperty()
+    metrica_composicion = StringProperty()
     rima = StringProperty()
     txt_texto = ObjectProperty()
     ultimo = NumericProperty ()

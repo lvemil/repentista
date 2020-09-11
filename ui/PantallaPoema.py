@@ -15,6 +15,7 @@ from ui.PantallaConfirmacion import PantallaConfirmacion
 from ui.Verso import Verso
 from modelo.Poema import Poema
 from repentista.rima import rima_poema
+from repentista.composicion import composicion
 
 
 class PantallaPoema(Screen):
@@ -64,6 +65,7 @@ class PantallaPoema(Screen):
             self.estado = "cargando"
             for v in versos:
                 self.adicionar_verso(texto = v, ultimo = 0)    
+                self.adicionar_verso(texto = "", ultimo=1)
         else:
             self.id = ""
             self.titulo = "Nuevo poema"
@@ -71,13 +73,21 @@ class PantallaPoema(Screen):
             self.composicion = self.manager.composicion
             self.modificado = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.gl_versos.clear_widgets()
-        self.adicionar_verso(texto = "", ultimo=1)
+            if self.manager.composicion:
+                self.agregar_espacios(self.manager.composicion)
+        
         self.estado = "editando"
         self.buscar_rima()
         self.__clock_event = Clock.schedule_interval(self.auto_guardar, 60)
 
     def do_on_pre_leave(self):
         self.guardar_poema()
+
+    def agregar_espacios(self, nombre_composicion):
+        c = composicion(nombre_composicion)
+        cant_versos = len(c[0])
+        for i,v in enumerate(c[0]):
+            self.adicionar_verso(texto = "", ultimo = 0 if i < cant_versos-1 else 1, metrica_composicion = str(v[0]), rima_composicion = v[1])
 
     def guardar_poema(self):
         if self.estado == "modificado":
@@ -94,12 +104,14 @@ class PantallaPoema(Screen):
         self.estado = "eliminado"
         self.btn_atras_on_press()
         
-    def adicionar_verso(self, texto = '', ultimo = 0):
+    def adicionar_verso(self, texto = '', ultimo = 0, metrica_composicion = "", rima_composicion = ""):
         w = Verso()
         w.pantalla = self
         w.texto = texto
         w.num = len(self.gl_versos.children) + 1
-        w.ultimo = 1
+        w.ultimo = ultimo
+        w.metrica_composicion = metrica_composicion
+        w.rima_composicion = rima_composicion
         self.gl_versos.add_widget(w)
 
     def buscar_rima(self):

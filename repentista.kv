@@ -187,16 +187,16 @@
     BoxLayout:
         orientation: 'horizontal'
         Label:
-            halign: 'center'
+            halign: 'left'
             size_hint_x: .05
             text: str(root.num)
-            font_size: dp(15)
+            font_size: dp(10)
             color: utils.get_color_from_hex(font_color)
             text_size: self.size
         TextInput:
             id: txt_texto
             halign: 'left'
-            size_hint_x: .85
+            size_hint_x: .75
             text: root.texto
             font_size: dp(15)
             color: utils.get_color_from_hex(font_color)
@@ -213,6 +213,20 @@
             halign: 'center'
             size_hint_x: .05
             text: root.rima
+            font_size: dp(15)
+            color: utils.get_color_from_hex(font_color)
+            text_size: self.size
+        Label:
+            halign: 'center'
+            size_hint_x: .05
+            text: root.metrica_composicion
+            font_size: dp(15)
+            color: utils.get_color_from_hex(font_color)
+            text_size: self.size
+        Label:
+            halign: 'center'
+            size_hint_x: .05
+            text: root.rima_composicion
             font_size: dp(15)
             color: utils.get_color_from_hex(font_color)
             text_size: self.size

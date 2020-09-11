@@ -19,8 +19,8 @@ def composicion(nombre = ""):
         "octavilla" : ([(8,"-"),(8,"a"),(8,"a"),(8,"b"),(8,"-"),(8,"c"),(8,"c"),(8,"b")], None),
         "octava_real" : ([(11,"a"),(11,"b"),(11,"a"),(11,"b"),(11,"a"),(11,"b"),(11,"c"),(11,"c")], None),
         "copla_arte_mayor" : ([(12,"a"),(12,"b"),(12,"b"),(12,"a"),(12,"a"),(12,"c"),(12,"c"),(12,"a")], TipoRima.CONSONATE),
-        "decima" : ([(12,"a"),(12,"b"),(12,"b"),(12,"a"),(12,"a"),(12,"c"),(12,"c"),(12,"a")], None),
-        "copla_real" : ([(12,"a"),(12,"b"),(12,"b"),(12,"a"),(12,"a"),(12,"c"),(12,"c"),(12,"a")], TipoRima.CONSONATE),
+        "decima" : ([(8,"a"),(8,"b"),(8,"b"),(8,"a"),(8,"a"),(8,"c"),(8,"c"),(8,"d"),(8,"d"),(8,"c")], None),
+        "copla_real" : ([(8,"a"),(8,"b"),(8,"a"),(8,"a"),(8,"b"),(8,"c"),(8,"d"),(8,"c"),(8,"c"),(8,"d")], TipoRima.CONSONATE),
     }
     if nombre:
         if nombre in composiciones:
