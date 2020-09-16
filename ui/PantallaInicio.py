@@ -39,7 +39,8 @@ class PantallaInicio(Screen):
             d = TarjetaPoema()
             d.manager = self.manager
             d.id = p[0]
-            d.titulo = p[1]
+            d.titulo = str(p[1])
+            d.composicion = p[5]
             d.verso = (p[2].splitlines()[0] + "...") if p[2] else "[vacio]"
             m = datetime.strptime(p[3], "%Y-%m-%d %H:%M:%S")
             d.modificado = m.strftime("%d/%m/%Y")

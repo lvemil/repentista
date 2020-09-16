@@ -60,11 +60,23 @@ class PantallaPoema(Screen):
             self.titulo = p.titulo
             self.cuerpo = p.cuerpo if p.cuerpo else ""
             self.modificado = p.modificado
-            versos = self.cuerpo.splitlines()
+            self.composicion = p.composicion
+            versos = self.cuerpo.split("\n")
             self.gl_versos.clear_widgets()
             self.estado = "cargando"
-            for v in versos:
-                self.adicionar_verso(texto = v, ultimo = 0)    
+            c = composicion(p.composicion)
+            cant_versos = len(versos)
+            for i,v in enumerate(versos):
+                if p.composicion == "libre":
+                    self.adicionar_verso(texto = v, ultimo = 0)    
+                else:
+                    self.adicionar_verso(
+                        texto = v, 
+                        ultimo = 0 if i < cant_versos-1 else 1, 
+                        metrica_composicion = str(c[0][i][0]), 
+                        rima_composicion = c[0][i][1])
+
+            if p.composicion == "libre":
                 self.adicionar_verso(texto = "", ultimo=1)
         else:
             self.id = ""
@@ -93,9 +105,10 @@ class PantallaPoema(Screen):
         if self.estado == "modificado":
             print("guardando...")
             versos = list(reversed([v.texto for v in self.gl_versos.children]))
-            cuerpo = versos if versos[-1] else versos[:-1]
-            p = Poema(id = self.id, titulo = self.txt_titulo.text, cuerpo = cuerpo)
+            cuerpo = versos if self.composicion != "libre" else versos[:-1]
+            p = Poema(id = self.id, titulo = self.txt_titulo.text, composicion = self.composicion, cuerpo = cuerpo)
             r = Poema.Guardar("data/repentista.db", p)
+            self.id = r
             self.modificado = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.estado = "editando"
     

@@ -5,9 +5,10 @@ import datetime
 
 class Poema:
     
-    def __init__(self, id = "", titulo = "", cuerpo = "", modificado = ""):
+    def __init__(self, id = "", titulo = "", composicion = "", cuerpo = "", modificado = ""):
         self.id = id
         self.titulo = titulo
+        self.composicion = composicion
         self.cuerpo = cuerpo
         self.modificado = modificado
 
@@ -39,7 +40,7 @@ class Poema:
             cur.execute(sql, [id])
             poemas = cur.fetchall()
             if poemas:
-                p = Poema(poemas[0][0],poemas[0][1], poemas[0][2], poemas[0][3])
+                p = Poema(id=poemas[0][0],titulo=poemas[0][1], composicion=poemas[0][5], cuerpo = poemas[0][2], modificado=poemas[0][3])
                 return p
             else:
                 return None            
@@ -57,16 +58,17 @@ class Poema:
             cur = con.cursor()
             modificado = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             if poema.id:
-                sql = f"UPDATE poema SET Cuerpo = ?, Titulo = ?, Modificado = ? WHERE id = ?"
-                cur.execute(sql, [cuerpo, poema.titulo, modificado, poema.id])
+                sql = f"UPDATE poema SET Titulo = ?, Composicion = ?, Cuerpo = ?, Modificado = ? WHERE id = ?"
+                cur.execute(sql, (poema.titulo, poema.composicion, cuerpo, modificado, poema.id))
             else:
                 id = str(uuid.uuid1())                
-                sql = f"INSERT INTO poema (ID, Titulo, Cuerpo, Modificado, Eliminado) VALUES (?, ?, ?, ?, 0)"
-                cur.execute(sql, [id, poema.titulo, cuerpo, modificado])
+                sql = f"INSERT INTO poema (ID, Titulo, Composicion, Cuerpo, Modificado, Eliminado) VALUES (?, ?, ?, ?, ?, 0)"
+                cur.execute(sql, (id, poema.titulo, poema.composicion, cuerpo, modificado))
             
             con.commit()
+            return poema.id if poema.id else id
         except Error as e:
-            print(e)
+            print(f"ERROR: {e}")
             return None
         finally:
             con.close()
