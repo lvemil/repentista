@@ -196,7 +196,7 @@
         TextInput:
             id: txt_texto
             halign: 'left'
-            size_hint_x: .75
+            size_hint_x: .70
             text: root.texto
             font_size: dp(15)
             color: utils.get_color_from_hex(font_color)
@@ -228,6 +228,13 @@
             size_hint_x: .05
             text: root.rima_composicion
             font_size: dp(15)
+            color: utils.get_color_from_hex(font_color)
+            text_size: self.size
+        Label:
+            halign: 'center'
+            size_hint_x: .05
+            text: root.valido
+            font_size: dp(10)
             color: utils.get_color_from_hex(font_color)
             text_size: self.size
 

@@ -16,6 +16,7 @@ class Verso(BoxLayout):
     txt_texto = ObjectProperty()
     ultimo = NumericProperty ()
     pantalla = ObjectProperty()
+    valido = StringProperty()
 
     def __init__(self, **kwargs):
         super(Verso, self).__init__(**kwargs)
@@ -34,9 +35,23 @@ class Verso(BoxLayout):
             if self.pantalla.estado == "editando":
                 self.pantalla.estado = "modificado"
 
+    def on_rima(self, instance, value):
+        if value:
+            self.validar_verso()
+    
+    def on_metrica(self, instance, value):
+        if value:
+            self.validar_verso()
+
+    def validar_verso(self):
+        if self.metrica == self.metrica_composicion and self.rima == self.rima_composicion:
+            self.valido = "si"
+        else:
+            self.valido = "no"
+
     def txt_texto_on_text(self):
         self.texto = self.txt_texto.text.strip()
-        if self.ultimo == 1 and self.texto and self.pantalla.estado in ["editando", "modificado"]:
+        if self.ultimo == 1 and self.texto and self.pantalla.estado in ["editando", "modificado"] and self.pantalla.composicion == "libre":
             self.ultimo = 0
             self.pantalla.adicionar_verso()
 
