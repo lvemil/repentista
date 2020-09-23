@@ -62,6 +62,8 @@ def rima_poema(poema):
         return None
 
 def riman_con(palabra,db):
+    assert palabra
+
     _,terminacion = separar_vocal_tonica(palabra)
     vocales = "".join(re.findall("[aeiouáéíóú]", terminacion))
     try:
@@ -72,6 +74,7 @@ def riman_con(palabra,db):
         sql = f"SELECT palabras FROM palabras WHERE terminacion = '{terminacion}'"
         cur.execute(sql)
         palabras = cur.fetchall()
+        consonante = []
         if palabras:
             consonante = [p + terminacion for p in palabras[0][0].split(",")]
 

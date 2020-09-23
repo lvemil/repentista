@@ -20,6 +20,7 @@ class Verso(BoxLayout):
 
     def __init__(self, **kwargs):
         super(Verso, self).__init__(**kwargs)
+        self.txt_texto.bind(focus = self.on_focus)
 
     def on_press(self):
         self.manager.id_poema = self.id
@@ -43,11 +44,15 @@ class Verso(BoxLayout):
         if value:
             self.validar_verso()
 
+    def on_focus(self, instance, value):
+        if value:
+            self.pantalla.verso_activo = self
+
     def validar_verso(self):
         if self.metrica == self.metrica_composicion and self.rima == self.rima_composicion:
-            self.valido = "si"
+            self.valido = "ok"
         else:
-            self.valido = "no"
+            self.valido = ""
 
     def txt_texto_on_text(self):
         self.texto = self.txt_texto.text.strip()

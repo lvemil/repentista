@@ -1,6 +1,7 @@
 from repentista.rima import TipoRima
 
 def composicion(nombre = ""):
+    """recibe el nombre de una composicion y retorna la rima esperada entre versos y el tipo de rima"""
     composiciones = {
         "pareado" : ([(0,"a"),(0,"a")], None),
         "alegria" : ([(5,"a"),(10,"a")], TipoRima.ASONANTE),
@@ -27,3 +28,15 @@ def composicion(nombre = ""):
             return composiciones[nombre]
     else:
         return composiciones
+
+def debe_rimar_con(verso, nombre_composicion):
+    """retorna con que verso debe rimar el verso indicado para una composicion indicada"""
+    c = composicion(nombre_composicion)
+    versos = c[0]
+    letra = versos[verso-1][1]
+    e = list(enumerate([x[1] for x in versos]))
+    v = [x for x in e if x[0]<verso-1 and x[1] == letra]
+    if v:
+        return v[-1][0]+1
+    else:
+        return None

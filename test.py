@@ -5,6 +5,7 @@ from repentista.silabeador import separar_silabas
 from repentista.metrica import medir_verso
 from repentista.acentuacion import silaba_tonica, tipo_palabra, ultima_vocal_tonica, TipoAcentuacion
 from repentista.rima import rima_verso, rima_poema, TipoRima, riman_con
+from repentista.composicion import debe_rimar_con
 
 def setUpModule():
     logging.basicConfig(level=logging.DEBUG)
@@ -275,3 +276,12 @@ class TestRima(unittest.TestCase):
     def test_rima_con(self):
         consonante, asonante = riman_con("canción", "data/palabras.db")
         print(consonante, asonante)
+
+class TestComposicion(unittest.TestCase):
+    def test_debe_rimar_con(self):
+        r = debe_rimar_con(3, "decima")
+        self.assertEqual(r, 2)
+        r = debe_rimar_con(4, "decima")
+        self.assertEqual(r, 1)
+        r = debe_rimar_con(6, "decima")
+        self.assertEqual(r, None)

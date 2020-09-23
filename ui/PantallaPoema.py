@@ -13,14 +13,14 @@ from kivy.clock import Clock
 from ui.TarjetaPoema import TarjetaPoema
 from ui.PantallaConfirmacion import PantallaConfirmacion
 from ui.Verso import Verso
+from ui.PantallaSeleccionarPalabraRima import PantallaSeleccionarPalabraRima
 from modelo.Poema import Poema
 from repentista.rima import rima_poema
-from repentista.composicion import composicion
-
+from repentista.composicion import composicion, debe_rimar_con
 
 class PantallaPoema(Screen):
-    gl_decimas = ObjectProperty()
-    sv_decimas = ObjectProperty()
+    gl_versos = ObjectProperty()
+    sv_versos = ObjectProperty()
     txt_titulo = ObjectProperty()
 
     id = StringProperty()
@@ -29,6 +29,7 @@ class PantallaPoema(Screen):
     cuerpo = StringProperty()
     modificado = StringProperty()
     estado = StringProperty()
+    verso_activo = ObjectProperty()
 
     def __init__(self, **kwargs):
         super(PantallaPoema, self).__init__(**kwargs)
@@ -45,6 +46,18 @@ class PantallaPoema(Screen):
         PantallaConfirmacion.mostrar(on_aceptar = lambda : {
             self.eliminar_poema()
         })        
+
+    def on_seleccionar_palabra(self, palabra):
+        self.gl_versos.children[0-self.verso_activo.num].texto += palabra 
+
+    def btn_buscar_rima_on_press(self):
+        v = debe_rimar_con(self.verso_activo.num, self.composicion)
+        if v:       
+            t = self.gl_versos.children[0-v].texto
+            palabra = t.split()[-1]
+        else:
+            palabra = ""
+        PantallaSeleccionarPalabraRima.mostrar(palabra = palabra, on_seleccionar=self.on_seleccionar_palabra)
 
     def txt_titulo_on_text(self):
         if self.estado == "editando":
